@@ -11,28 +11,20 @@ module ProjectsTreeView
 
       open_issues = Issue.visible.includes(:project, :status).where(["(#{cond}) AND #{IssueStatus.table_name}.is_closed=?", false]).references(:project, :status).count
 
-      if open_issues > 0
-        issues_closed_percent = (1 - open_issues.to_f/project.issues.count) * 100
-        s << "<div>Issues: " +
-          link_to("#{open_issues} open", :controller => 'issues', :action => 'index', :project_id => project, :set_filter => 1) +
+      if project.issues.count > 0
+		if open_issues == project.issues.count
+			issues_closed_percent = 100
+		else
+			issues_closed_percent = (1 - open_issues.to_f/project.issues.count) * 100
+		end
+        s << "<div>Tarefas: " +
+          link_to("#{open_issues} abertas", :controller => 'issues', :action => 'index', :project_id => project, :set_filter => 1) +
           "<small> / #{project.issues.count} total</small></div>" +
           progress_bar(issues_closed_percent, :width => '30em', :legend => '%0.0f%' % issues_closed_percent)
       end
       project_versions = project_open(project)
 
-      unless project_versions.empty?
-        s << "<div>"
-        project_versions.reverse_each do |version|
-          unless version.completed?
-            s << "<div style=\"clear:both; display: block\">" + link_to_version(version) + ": " +
-            link_to_if(version.open_issues_count > 0, l(:label_x_open_issues_abbr, :count => version.open_issues_count), :controller => 'issues', :action => 'index', :project_id => version.project, :status_id => 'o', :fixed_version_id => version, :set_filter => 1) +
-            "<small> / " + link_to_if(version.closed_issues_count > 0, l(:label_x_closed_issues_abbr, :count => version.closed_issues_count), :controller => 'issues', :action => 'index', :project_id => version.project, :status_id => 'c', :fixed_version_id => version, :set_filter => 1) + "</small>. "
-            s << due_date_distance_in_words(version.effective_date) if version.effective_date
-            s << "</div><br />" +
-            progress_bar([version.closed_percent, version.completed_percent], :width => '30em', :legend => ('%0.0f%' % version.completed_percent))
-          end
-        end
-        s << "</div>"
+      unless project_versions.empty?        
       end
       s.html_safe
     end
