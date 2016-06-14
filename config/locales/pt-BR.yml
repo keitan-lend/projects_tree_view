@@ -1,5 +1,7 @@
 pt-BR:
-  field_versions: "Versões/Sprints"
+  field_versions: "Progressão"
   field_go_to: "Ir para módulo"
   subprojects: "Sub-projetos"
-  expand_all: "Expandir todos os projetos"
+  expand_all: "Expandir Todos"
+  collapse_all: "Retrair Todos"
+  show_progress: "Mostrar Progresso dos Projetos"
