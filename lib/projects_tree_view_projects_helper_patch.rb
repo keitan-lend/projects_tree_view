@@ -17,21 +17,21 @@ module ProjectsTreeView
 		else
 			issues_closed_percent = (1 - open_issues.to_f/project.issues.count) * 100
 		end
-        s << "<div style=\"margin-bottom: -2%;\">Tarefas: " +
-          link_to("#{open_issues} abertas", :controller => 'issues', :action => 'index', :project_id => project, :set_filter => 1) +
+        s << "<div style=\"margin-bottom: -2%;\">Issues: " +
+          link_to("#{open_issues} open", :controller => 'issues', :action => 'index', :project_id => project, :set_filter => 1) +
           "<small> / " + link_to("#{project.issues.count} total", :controller => 'issues', :action => 'index', :project_id => project, :status_id => 'c', :set_filter => 1) + "</small></div>" +
 		s << "<div style=\"display: inline-flex; align-items: center;\">" +
           progress_bar(issues_closed_percent, :width => '30em', :legend => '%0.0f%' % issues_closed_percent) + "</div>"
       end
-      project_versions = project_open(project)
+      project_versions = versions_open(project)
 
       unless project_versions.empty?
         s << "<div>"
         project_versions.reverse_each do |version|
           unless version.completed?
             s << "<div style=\"clear:both;display: block; margin-bottom: -2%;\">" + link_to_version(version) + ": " +
-            link_to_if(version.open_issues_count > 0, l(:label_x_open_issues_abbr, :count => version.open_issues_count), :controller => 'issues', :action => 'index', :project_id => version.project, :status_id => 'o', :fixed_version_id => version, :set_filter => 1) +
-            "<small> / " + link_to_if(version.closed_issues_count > 0, l(:label_x_closed_issues_abbr, :count => version.closed_issues_count), :controller => 'issues', :action => 'index', :project_id => version.project, :status_id => 'c', :fixed_version_id => version, :set_filter => 1) + "</small>. "
+            link_to( l(:label_x_open_issues_abbr, :count => version.open_issues_count), :controller => 'issues', :action => 'index', :project_id => version.project, :status_id => 'o', :fixed_version_id => version, :set_filter => 1) +
+            "<small> / " + link_to( l(:label_x_closed_issues_abbr, :count => version.closed_issues_count), :controller => 'issues', :action => 'index', :project_id => version.project, :status_id => 'c', :fixed_version_id => version, :set_filter => 1) + "</small>. "
             s << due_date_distance_in_words(version.effective_date) if version.effective_date
             s << "</div><div style=\"display: inline-flex; align-items: center;\">" +
             progress_bar([version.closed_percent, version.completed_percent], :width => '30em', :legend => ('%0.0f%' % version.completed_percent)) + "</div>"
@@ -50,7 +50,7 @@ module ProjectsTreeView
       links.join(", ").html_safe
     end
 
-    def project_open(project)
+    def versions_open(project)
       #trackers = project.trackers.order(:position)
       #retrieve_selected_tracker_ids(trackers, trackers.select {|t| t.is_in_roadmap?})
       with_subprojects =  Setting.display_subprojects_issues?
