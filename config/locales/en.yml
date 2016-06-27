@@ -6,4 +6,6 @@ en:
   subprojects: sub projects
   expand_all: "Expand All"
   collapse_all: "Collapse All"
+  show_description: "Show project description"
   show_progress: "Show project progress"
+  show_date: "Show project creation date"
