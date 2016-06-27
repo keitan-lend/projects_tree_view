@@ -4,4 +4,6 @@ pt-BR:
   subprojects: "Sub-projetos"
   expand_all: "Expandir Todos"
   collapse_all: "Retrair Todos"
+  show_description: "Mostrar Descrição dos Projetos"
   show_progress: "Mostrar Progresso dos Projetos"
+  show_date: "Mostrar Data de Criação dos Projetos"
