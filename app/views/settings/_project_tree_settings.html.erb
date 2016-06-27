@@ -1,4 +1,12 @@
 <p>
+  <%= content_tag(:label, l(:show_description)) %>
+  <%= check_box_tag('settings[show_project_description]', true, @settings['show_project_description'])%>
+</p>
+<p>
   <%= content_tag(:label, l(:show_progress)) %>
   <%= check_box_tag('settings[show_project_progress]', true, @settings['show_project_progress'])%>
+</p>
+<p>
+  <%= content_tag(:label, l(:show_date)) %>
+  <%= check_box_tag('settings[show_project_date]', true, @settings['show_project_date'])%>
 </p>
